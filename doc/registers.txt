@@ -1,0 +1,51 @@
+64 BIT / 8 BYTE
+
+GENERAL PURPOSE
+
+-- caller-saved; subroutine might use --
+** Accumulator RAX ** // 1st return reg
+rax eax ax [ah | al]
+
+** Counter: RCX ** // 4th int argument
+rcx ecx cx [ch | cl]
+
+** Data: RDX ** // 3rd arg; 2nd return
+rdx edx dx [dh | dl]
+
+** Misc **
+r12 - r15
+
+
+
+-- callee-saved --
+** Base RBX **
+rbx ebx dx [bh | bl]
+
+** Source RSI ** // 2nd arg
+rsi esi si sil
+
+** Destination RDI ** // 1st arg
+rdi edi di dil
+
+** Misc **
+r8 - r11
+
+
+
+
+STACK POINTERS
+
+** Stack Pointer RSP **
+rsp esp sp spl
+
+** Stack base Ptr RBP **
+-- subroutine won't use --
+rbp ebp bp bpl
+
+
+-------------
+Params: RDI, RSI, RDX, RCX
+
+
+
+

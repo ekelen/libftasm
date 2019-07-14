@@ -1,0 +1,16 @@
+## --- The usual... --------------- ##
+.DS_Store
+*.dSYM/
+.vscode/
+*.o
+*.a
+a.out
+
+## --- Scratchpads, tests, etc. --- ##
+tests_libasm
+libfts_tests
+test_files
+test_cat
+42FileChecker
+*sandbox*
+libft/
