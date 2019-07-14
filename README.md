@@ -16,3 +16,16 @@ In source files in the root of the cloned repository:
 ```C
 # include "inc/libfts.h"
 ```
+
+## Test
+
+```bash
+libftasm$ make re; make test
+libftasm$ ./a.out
+```
+
+## Cleanup
+
+```bash
+libtasm$ make fclean
+```
