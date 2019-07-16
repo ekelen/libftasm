@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/16 16:33:33 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/16 17:03:08 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,13 +147,47 @@ bool	test_ft_tolower(void) {
 	return (success);
 }
 bool	test_ft_bzero(void) {
-	return (true);
+	bool success = true;
+	const size_t n_cases = 5;
+
+	char test_strs[][100] = {
+		"\0",
+		"Hi",
+		"Bye",
+		"École 42",
+		"érable"
+	};
+
+	char copy_buf[100] = "";
+	char buf[100] = "";
+
+	size_t len;
+	for (size_t i = 0; i < n_cases; i++) {
+		bzero(buf, 100);
+		bzero(copy_buf, 100);
+		strcpy(buf, test_strs[i]);
+		strcpy(copy_buf, test_strs[i]);
+
+		len = strlen(test_strs[i]);
+		bzero(test_strs[i], len);
+		ft_bzero(copy_buf, len);
+
+		if ((success = (!memcmp(test_strs[i], copy_buf, 100) && success == true))) {
+			g_verbose && dprintf(1, "%s %s %s %s\n", GREEN, CHECK, buf, RESET);
+		} else {
+			g_verbose && dprintf(1, "%s %s %s %s\n", RED, X, buf, RESET);
+			break;
+		}
+	}
+	return (success);
 }
 bool	test_ft_puts(void) {
-	return (true);
+	bool success = false;
+	return (success);
 }
 bool	test_ft_strcat(void) {
-	return (true);
+	bool success = false;
+	return (success);
 }
 
 // II. Required less simple
