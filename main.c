@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/16 16:13:53 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/16 16:28:35 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,17 @@ static void run_test(t_test test)
 
 // I. Required simple
 bool	test_ft_isalpha(void) {
-	return (true);
+	bool success = false;
+	for (int test_case = -1; test_case < UCHAR_MAX; test_case++) {
+		if ((success = ft_isalpha(test_case) == isalpha('c')) == true) {
+			g_verbose && dprintf(2, "%s %s char %lc (%#x)%s\n", GREEN, CHECK, (char)test_case, (int16_t)test_case, RESET);
+		} else {
+			g_verbose && dprintf(2, "%s %s char %c q(%#x)%s\n", RED, X, (char)test_case, (int16_t)test_case, RESET);
+		}
+	}
+	return (success);
 }
+
 bool	test_ft_isdigit(void) {
 	return (false);
 }
