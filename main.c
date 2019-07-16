@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/16 16:28:35 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/16 16:33:33 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void run_test(t_test test)
 bool	test_ft_isalpha(void) {
 	bool success = false;
 	for (int test_case = -1; test_case < UCHAR_MAX; test_case++) {
-		if ((success = ft_isalpha(test_case) == isalpha('c')) == true) {
+		if ((success = ft_isalpha(test_case) == isalpha(test_case)) == true) {
 			g_verbose && dprintf(2, "%s %s char %lc (%#x)%s\n", GREEN, CHECK, (char)test_case, (int16_t)test_case, RESET);
 		} else {
 			g_verbose && dprintf(2, "%s %s char %c q(%#x)%s\n", RED, X, (char)test_case, (int16_t)test_case, RESET);
@@ -78,22 +78,73 @@ bool	test_ft_isalpha(void) {
 }
 
 bool	test_ft_isdigit(void) {
-	return (false);
+	bool success = false;
+	for (int test_case = -1; test_case < UCHAR_MAX; test_case++) {
+		if ((success = ft_isdigit(test_case) == isdigit(test_case)) == true) {
+			g_verbose && dprintf(2, "%s %s char %lc (%#x)%s\n", GREEN, CHECK, (char)test_case, (int16_t)test_case, RESET);
+		} else {
+			g_verbose && dprintf(2, "%s %s char %c q(%#x)%s\n", RED, X, (char)test_case, (int16_t)test_case, RESET);
+		}
+	}
+	return (success);
 }
 bool	test_ft_isalnum(void) {
-	return (true);
+	bool success = false;
+	for (int test_case = -1; test_case < UCHAR_MAX; test_case++) {
+		if ((success = ft_isalnum(test_case) == isalnum(test_case)) == true) {
+			g_verbose && dprintf(2, "%s %s char %lc (%#x)%s\n", GREEN, CHECK, (char)test_case, (int16_t)test_case, RESET);
+		} else {
+			g_verbose && dprintf(2, "%s %s char %c q(%#x)%s\n", RED, X, (char)test_case, (int16_t)test_case, RESET);
+		}
+	}
+	return (success);
 }
 bool	test_ft_isascii(void) {
-	return (true);
+	bool success = false;
+	for (int test_case = -1; test_case < UCHAR_MAX; test_case++) {
+		if ((success = ft_isascii(test_case) == isascii(test_case)) == true) {
+			g_verbose && dprintf(2, "%s %s char %lc (%#x)%s\n", GREEN, CHECK, (char)test_case, (int16_t)test_case, RESET);
+		} else {
+			g_verbose && dprintf(2, "%s %s char %c q(%#x)%s\n", RED, X, (char)test_case, (int16_t)test_case, RESET);
+		}
+	}
+	return (success);
 }
+
 bool	test_ft_isprint(void) {
-	return (true);
+	bool success = false;
+	for (int test_case = -1; test_case < UCHAR_MAX; test_case++) {
+		if ((success = ft_isprint(test_case) == isprint(test_case)) == true) {
+			g_verbose && dprintf(2, "%s %s char %lc (%#x)%s\n", GREEN, CHECK, (char)test_case, (int16_t)test_case, RESET);
+		} else {
+			g_verbose && dprintf(2, "%s %s char %c q(%#x)%s\n", RED, X, (char)test_case, (int16_t)test_case, RESET);
+		}
+	}
+	return (success);
 }
+
 bool	test_ft_toupper(void) {
-	return (true);
+	bool success = false;
+	for (int test_case = -1; test_case < UCHAR_MAX; test_case++) {
+		if ((success = ft_toupper(test_case) == toupper(test_case)) == true) {
+			g_verbose && dprintf(2, "%s %s char %lc (%#x)%s\n", GREEN, CHECK, (char)test_case, (int16_t)test_case, RESET);
+		} else {
+			g_verbose && dprintf(2, "%s %s char %c q(%#x)%s\n", RED, X, (char)test_case, (int16_t)test_case, RESET);
+		}
+	}
+	return (success);
 }
+
 bool	test_ft_tolower(void) {
-	return (true);
+	bool success = false;
+	for (int test_case = -1; test_case < UCHAR_MAX; test_case++) {
+		if ((success = ft_tolower(test_case) == tolower(test_case)) == true) {
+			g_verbose && dprintf(2, "%s %s char %lc (%#x)%s\n", GREEN, CHECK, (char)test_case, (int16_t)test_case, RESET);
+		} else {
+			g_verbose && dprintf(2, "%s %s char %c q(%#x)%s\n", RED, X, (char)test_case, (int16_t)test_case, RESET);
+		}
+	}
+	return (success);
 }
 bool	test_ft_bzero(void) {
 	return (true);
