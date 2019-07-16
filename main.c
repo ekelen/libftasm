@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/16 17:03:08 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/16 20:09:26 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@
 
 #define CHECK "\xE2\x9C\x93"
 #define X "\xe2\x9c\x97"
+
+#define CASE 0x1
+#define TEST 0x10
 
 bool g_verbose = false;
 
@@ -66,134 +69,234 @@ static void run_test(t_test test)
 
 // I. Required simple
 bool	test_ft_isalpha(void) {
-	bool success = false;
+	bool success = true;
+
 	for (int test_case = -1; test_case < UCHAR_MAX; test_case++) {
-		if ((success = ft_isalpha(test_case) == isalpha(test_case)) == true) {
+		if (ft_isalpha(test_case) == isalpha(test_case)) {
 			g_verbose && dprintf(2, "%s %s char %lc (%#x)%s\n", GREEN, CHECK, (char)test_case, (int16_t)test_case, RESET);
 		} else {
 			g_verbose && dprintf(2, "%s %s char %c q(%#x)%s\n", RED, X, (char)test_case, (int16_t)test_case, RESET);
+			success = false;
 		}
 	}
 	return (success);
 }
 
 bool	test_ft_isdigit(void) {
-	bool success = false;
+	bool success = true;
+
 	for (int test_case = -1; test_case < UCHAR_MAX; test_case++) {
-		if ((success = ft_isdigit(test_case) == isdigit(test_case)) == true) {
+		if (ft_isdigit(test_case) == isdigit(test_case)) {
 			g_verbose && dprintf(2, "%s %s char %lc (%#x)%s\n", GREEN, CHECK, (char)test_case, (int16_t)test_case, RESET);
 		} else {
 			g_verbose && dprintf(2, "%s %s char %c q(%#x)%s\n", RED, X, (char)test_case, (int16_t)test_case, RESET);
+			success = false;
 		}
 	}
 	return (success);
 }
+
 bool	test_ft_isalnum(void) {
-	bool success = false;
+	bool success = true;
+
 	for (int test_case = -1; test_case < UCHAR_MAX; test_case++) {
-		if ((success = ft_isalnum(test_case) == isalnum(test_case)) == true) {
+		if (ft_isalnum(test_case) == isalnum(test_case)) {
 			g_verbose && dprintf(2, "%s %s char %lc (%#x)%s\n", GREEN, CHECK, (char)test_case, (int16_t)test_case, RESET);
 		} else {
 			g_verbose && dprintf(2, "%s %s char %c q(%#x)%s\n", RED, X, (char)test_case, (int16_t)test_case, RESET);
+			success = false;
 		}
 	}
 	return (success);
 }
+
 bool	test_ft_isascii(void) {
-	bool success = false;
+	bool success = true;
+
 	for (int test_case = -1; test_case < UCHAR_MAX; test_case++) {
-		if ((success = ft_isascii(test_case) == isascii(test_case)) == true) {
+		if (ft_isascii(test_case) == isascii(test_case)) {
 			g_verbose && dprintf(2, "%s %s char %lc (%#x)%s\n", GREEN, CHECK, (char)test_case, (int16_t)test_case, RESET);
 		} else {
 			g_verbose && dprintf(2, "%s %s char %c q(%#x)%s\n", RED, X, (char)test_case, (int16_t)test_case, RESET);
+			success = false;
 		}
 	}
 	return (success);
 }
 
 bool	test_ft_isprint(void) {
-	bool success = false;
+	bool success = true;
+
 	for (int test_case = -1; test_case < UCHAR_MAX; test_case++) {
-		if ((success = ft_isprint(test_case) == isprint(test_case)) == true) {
+		if (ft_isprint(test_case) == isprint(test_case)) {
 			g_verbose && dprintf(2, "%s %s char %lc (%#x)%s\n", GREEN, CHECK, (char)test_case, (int16_t)test_case, RESET);
 		} else {
 			g_verbose && dprintf(2, "%s %s char %c q(%#x)%s\n", RED, X, (char)test_case, (int16_t)test_case, RESET);
+			success = false;
 		}
 	}
 	return (success);
 }
 
 bool	test_ft_toupper(void) {
-	bool success = false;
+	bool success = true;
+
 	for (int test_case = -1; test_case < UCHAR_MAX; test_case++) {
-		if ((success = ft_toupper(test_case) == toupper(test_case)) == true) {
+		if (ft_toupper(test_case) == toupper(test_case)) {
 			g_verbose && dprintf(2, "%s %s char %lc (%#x)%s\n", GREEN, CHECK, (char)test_case, (int16_t)test_case, RESET);
 		} else {
 			g_verbose && dprintf(2, "%s %s char %c q(%#x)%s\n", RED, X, (char)test_case, (int16_t)test_case, RESET);
+			success = false;
 		}
 	}
 	return (success);
 }
 
 bool	test_ft_tolower(void) {
-	bool success = false;
+	bool success = true;
+
 	for (int test_case = -1; test_case < UCHAR_MAX; test_case++) {
-		if ((success = ft_tolower(test_case) == tolower(test_case)) == true) {
+		if (ft_tolower(test_case) == tolower(test_case)) {
 			g_verbose && dprintf(2, "%s %s char %lc (%#x)%s\n", GREEN, CHECK, (char)test_case, (int16_t)test_case, RESET);
 		} else {
 			g_verbose && dprintf(2, "%s %s char %c q(%#x)%s\n", RED, X, (char)test_case, (int16_t)test_case, RESET);
+			success = false;
 		}
 	}
 	return (success);
 }
-bool	test_ft_bzero(void) {
-	bool success = true;
-	const size_t n_cases = 5;
 
-	char test_strs[][100] = {
+bool	test_ft_bzero(void) {
+	// TODO: Music Falls Around Her
+	bool success = true;
+	const size_t N_CASES = 7, BUFLEN = 300;
+	char copy_buf[BUFLEN] = "", buf[BUFLEN] = "";
+	size_t len;
+	char test_case[][BUFLEN] = {
+		"",
 		"\0",
 		"Hi",
 		"Bye",
 		"École 42",
-		"érable"
+		"érable 🍁",
+		"The Road goes ever on and on, / Down from the door where it began. / Now far ahead the Road has gone, / And I must follow, if I can, / Pursuing it with eager feet, / Until it joins some larger way / Where many paths and errands meet. / And whither then? I cannot say."
 	};
 
-	char copy_buf[100] = "";
-	char buf[100] = "";
 
-	size_t len;
-	for (size_t i = 0; i < n_cases; i++) {
-		bzero(buf, 100);
-		bzero(copy_buf, 100);
-		strcpy(buf, test_strs[i]);
-		strcpy(copy_buf, test_strs[i]);
+	for (size_t i = 0; i < N_CASES; i++) {
+		bzero(buf, BUFLEN);
+		bzero(copy_buf, BUFLEN);
+		strcpy(buf, test_case[i]);
+		strcpy(copy_buf, test_case[i]);
 
-		len = strlen(test_strs[i]);
-		bzero(test_strs[i], len);
+		len = strlen(test_case[i]);
+		bzero(test_case[i], len);
 		ft_bzero(copy_buf, len);
 
-		if ((success = (!memcmp(test_strs[i], copy_buf, 100) && success == true))) {
+		if (!memcmp(test_case[i], copy_buf, BUFLEN)) {
 			g_verbose && dprintf(1, "%s %s %s %s\n", GREEN, CHECK, buf, RESET);
 		} else {
 			g_verbose && dprintf(1, "%s %s %s %s\n", RED, X, buf, RESET);
-			break;
+			success = false;
 		}
 	}
 	return (success);
 }
+
 bool	test_ft_puts(void) {
-	bool success = false;
+	const size_t N_CASES = 6;
+	int actual, expected;
+	bool success = true;
+	const char *cases[] = {
+		NULL, // TODO: Do we care about printing (null)
+		"\\200",
+		"",
+		"abc",
+		"Érable 🍁",
+		"The Road goes ever on and on, / Down from the door where it began. / Now far ahead the Road has gone, / And I must follow, if I can, / Pursuing it with eager feet, / Until it joins some larger way / Where many paths and errands meet. / And whither then? I cannot say."
+	};
+
+	for (size_t i = 0; i < N_CASES; i++) {
+		actual = ft_puts(cases[i]);
+		expected = puts(cases[i]);
+		if (actual == expected) {
+			g_verbose && dprintf(1, "%s %s %s\n", GREEN, CHECK, RESET);
+		} else {
+			g_verbose && dprintf(1, "%s %s expected: %d, got: %d%s\n", RED, X, expected, actual, RESET);
+			success = false;
+		}
+	}
 	return (success);
 }
+
 bool	test_ft_strcat(void) {
-	bool success = false;
+	const size_t N_CASES = 7, BUFLEN = 300;
+	char actual[BUFLEN] = "", expected[BUFLEN] = "";
+	bool success = true;
+	char const *s1[BUFLEN] = {
+		"1 + 1",
+		"0 characters are appended to me!",
+		"",
+		"abc",
+		"Érable 🍁 ",
+		"The Road goes ever on and on, / Down from the door where it began. / Now far ahead the Road has gone, / And I must follow, if I can, / Pursuing it with eager feet, / Until it joins some larger way / Where many paths and errands meet. / And whither then? I cannot say."
+	};
+
+	char const *s2[BUFLEN] = {
+		" = 2\n",
+		"",
+		"I'm appended to 0 characters!\n",
+		"def\n",
+		" Sapin 🌲\n",
+		" -- JRR Tolkien\n",
+	};
+
+	for (size_t i = 0; i < N_CASES - 2; i++) {
+		bzero(actual, BUFLEN);
+		bzero(expected, BUFLEN);
+
+		strcpy(actual, s1[i]);
+		strcpy(expected, s1[i]);
+
+		ft_strcat(actual, s2[i]);
+		strcat(expected, s2[i]);
+
+		if (!strcmp(actual, expected)) {
+			g_verbose && dprintf(1, "%s %s got expected: %s %s\n", GREEN, CHECK, actual, RESET);
+		} else {
+			g_verbose && dprintf(1, "%s %s expected: %s, got: %s%s\n", RED, X, expected, actual, RESET);
+			success = false;
+		}
+	}
 	return (success);
 }
 
 // II. Required less simple
 bool	test_ft_strlen(void) {
-	return (true);
+	bool success = true;
+	const size_t N_CASES = 7;
+
+	const char *cases[] = {
+		"123456789",
+		"123",
+		"",
+		"🇨🇦",
+		"Ensoleillé 🌞",
+		"Ho! Tom Bombadil, Tom Bombadillo! / By water, wood and hill, by the reed and willow, / By fire, sun and moon, harken now and hear us! / Come, Tom Bombadil, for our need is near us!",
+		"String\0 Interrupted"
+	};
+
+	for (size_t i = 0; i < N_CASES; i++) {
+		if (ft_strlen(cases[i]) == strlen(cases[i])) {
+			g_verbose && dprintf(1, "%s %s got expected strlen: %ld for string: %s%s\n", GREEN, CHECK, ft_strlen(cases[i]), cases[i], RESET);
+		} else {
+			g_verbose && dprintf(1, "%s %s got: %ld, expected: %ld\nstring: %s%s\n", RED, X, ft_strlen(cases[i]), strlen(cases[i]), cases[i], RESET);
+			success = false;
+		}
+	}
+	return (success);
 }
+
 bool	test_ft_strdup(void) {
 	return (true);
 }
@@ -263,7 +366,6 @@ int main(int ac, char *av[]) {
 		g_verbose = true;
 	if (ac > 1 + (int)g_verbose) {
 		for (int a = 1; a < ac; a++) {
-			dprintf(1, "av[a] :: %s\n", av[a]);
 			for (int j = 0; j < 20; j++) {
 				if (!strcmp(tests[j].name, av[a])) {
 					run_test(tests[j]);
