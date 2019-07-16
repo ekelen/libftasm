@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/16 15:42:36 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/16 15:53:07 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,8 @@
 #define FAIL "[FAIL]"
 #define SUCCESS "[SUCCESS]"
 
-#undef BOLD
 #define BOLD "\x1b[1m"
-#undef GREEN
 #define GREEN "\x1b[32m"
-#undef RED
 #define RED "\x1b[91m"
 #undef RESET
 #define RESET "\x1b[0m"
@@ -136,8 +133,6 @@ bool	test_ft_strchr(void) {
 
 int main(int ac, char **av)
 {
-	(void)ac;
-	(void)av;
 
 	t_test tests[20] = {
 		// I. Required simple
@@ -169,8 +164,21 @@ int main(int ac, char **av)
 		{test_ft_strchr, "ft_strchr"}
 	};
 
+	if (ac > 1) {
+		for (int a = 1; a < ac; a++) {
+			dprintf(1, "av[a] :: %s\n", av[a]);
+			for (int j = 0; j < 20; j++) {
+				if (!strcmp(tests[j].name, av[a])) {
+					run_test(tests[j]);
+				}
+			}
+		}
+		return (0);
+	}
+
 	for (int i = 0; i < 20; i++)
 	{
 		run_test(tests[i]);
 	}
+	return (0);
 }
