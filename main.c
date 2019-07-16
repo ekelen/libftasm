@@ -6,26 +6,25 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/16 15:32:42 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/16 15:42:36 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/libfts.h"
-#include <stdio.h>
-#include <ctype.h>
 #include <assert.h>
-#include <string.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdint.h>
+#include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <limits.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/types.h>
+#include <unistd.h>
 
-#undef FAIL
 #define FAIL "[FAIL]"
-#undef SUCCESS
 #define SUCCESS "[SUCCESS]"
 
 #undef BOLD
@@ -37,12 +36,9 @@
 #undef RESET
 #define RESET "\x1b[0m"
 
-#undef CHECK
 #define CHECK "\xE2\x9C\x93"
-#undef X
 #define X "\xe2\x9c\x97"
 
-typedef struct s_test t_test;
 typedef struct s_test
 {
 	bool (*test_fn)(void);
