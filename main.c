@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/14 20:58:04 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/16 15:32:42 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,18 @@ static void run_test(t_test test)
 {
 	static int i = 0;
 	bool passed = 0;
-	dprintf(1, "\n%s%d: %s%s\n", BOLD, i, test.name, RESET);
-	dprintf(1, "%s\n", test.name);
+	dprintf(1, "\n%s*----------------------------------*\n%02d. %s\n*----------------------------------*%s\n", BOLD, i, test.name, RESET);
+
 	passed = test.test_fn();
 	if (passed)
 	{
-		dprintf(1, "\n%s%s%s\n", GREEN, SUCCESS, RESET);
+		dprintf(1, "\n%s%02d. %-14s%18s%s\n", GREEN, i, test.name, SUCCESS, RESET);
+		dprintf(1, "%s*----------------------------------*\n%s", GREEN, RESET);
 	}
 	else
 	{
-		dprintf(1, "\n%s%s%s\n", RED, FAIL, RESET);
+		dprintf(1, "\n%s%02d. %-14s%18s%s\n", RED, i, test.name, FAIL, RESET);
+		dprintf(1, "%s*----------------------------------*\n%s", RED, RESET);
 	}
 	i++;
 }
@@ -72,7 +74,7 @@ bool	test_ft_isalpha(void) {
 	return (true);
 }
 bool	test_ft_isdigit(void) {
-	return (true);
+	return (false);
 }
 bool	test_ft_isalnum(void) {
 	return (true);
@@ -171,10 +173,8 @@ int main(int ac, char **av)
 		{test_ft_strchr, "ft_strchr"}
 	};
 
-	for (int i = 0; i < 18; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		run_test(tests[i]);
 	}
-
-	printf("%s Nothing here yet... %s", BOLD, RESET);
 }
