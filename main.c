@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/16 15:53:07 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/16 16:13:53 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@
 
 #define CHECK "\xE2\x9C\x93"
 #define X "\xe2\x9c\x97"
+
+bool g_verbose = false;
 
 typedef struct s_test
 {
@@ -131,8 +133,7 @@ bool	test_ft_strchr(void) {
 	return (true);
 }
 
-int main(int ac, char **av)
-{
+int main(int ac, char *av[]) {
 
 	t_test tests[20] = {
 		// I. Required simple
@@ -164,7 +165,9 @@ int main(int ac, char **av)
 		{test_ft_strchr, "ft_strchr"}
 	};
 
-	if (ac > 1) {
+	if (ac > 1 && (!strcmp(av[1], "--verbose") || (!strcmp(av[1], "-v"))))
+		g_verbose = true;
+	if (ac > 1 + (int)g_verbose) {
 		for (int a = 1; a < ac; a++) {
 			dprintf(1, "av[a] :: %s\n", av[a]);
 			for (int j = 0; j < 20; j++) {
@@ -173,12 +176,11 @@ int main(int ac, char **av)
 				}
 			}
 		}
-		return (0);
-	}
-
-	for (int i = 0; i < 20; i++)
-	{
-		run_test(tests[i]);
+	} else {
+		for (int i = 0; i < 20; i++)
+		{
+			run_test(tests[i]);
+		}
 	}
 	return (0);
 }
