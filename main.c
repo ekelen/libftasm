@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/17 18:44:08 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/17 22:11:20 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -558,8 +558,38 @@ bool	test_ft_strcpy(void) {
 }
 
 bool	test_ft_strequ(void) {
-	return (true);
+	bool success = true;
+	const size_t N_CASES = 7;
+	struct s_memcmp_case *kase = NULL;
+	int actual = -1, expected = -1;
+	struct s_memcmp_case cases[] = {
+		{"Hello", "Goodbye", 5},
+		{"\200", "\200", 1},
+		{"école 42", "ecole 42", 8},
+		{"", "123", 1},
+		{"42 school", "21 school", 1},
+		{"1234", "1234", 4},
+		{"", "", 1},
+		{"12345", "1234", 0}
+	};
+
+	int isTheSame = -1;
+
+	for (size_t i = 0; i < N_CASES; i++) {
+		kase = &(cases[i]);
+		expected = strcmp(kase->s1, kase->s2) == 0;
+		isTheSame = expected;
+		actual = ft_strequ(kase->s1, kase->s2);
+		if (actual == expected) {
+			g_verbose && dprintf(1, "%s %s cmp (%s) (%s): %d%s\n", GREEN, CHECK, kase->s1, kase->s2, actual, RESET);
+		} else {
+			g_verbose && dprintf(1, "%s %s cmp (%s) (%s): expected: %d, got: %d%s\n", RED, X, kase->s1, kase->s2, actual, expected, RESET);
+			success = false;
+		}
+	}
+	return (success);
 }
+
 bool	test_ft_strchr(void) {
 	return (true);
 }
