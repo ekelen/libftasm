@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/17 22:20:58 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/17 22:48:16 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -587,8 +587,38 @@ bool	test_ft_strequ(void) {
 	return (success);
 }
 
+struct s_strchr_case {
+	const char *s;
+	int c;
+};
+
 bool	test_ft_strchr(void) {
-	return (true);
+	bool success = true;
+	const size_t N_CASES = 7;
+	struct s_strchr_case *kase = NULL;
+	char *actual = NULL, *expected = NULL;
+	struct s_strchr_case cases[] = {
+		{"12345", '5'},
+		{"12345", '1'},
+		{"12345", '0'},
+		{"12345", 'X'},
+		{"12345", '\0'},
+		{"xxxxxxxxx\00", '0'},
+		{"\0ooooooo0", '\0'}
+	};
+
+	for (size_t i = 0; i < N_CASES; i++) {
+		kase = &(cases[i]);
+		expected = strchr(kase->s, kase->c);
+		actual = ft_strchr(kase->s, kase->c);
+		if (actual == expected) {
+			g_verbose && dprintf(1, "%s %s string search ('%c') in (%s): (%s)%s\n", GREEN, CHECK, (char)kase->c, kase->s, actual, RESET);
+		} else {
+			g_verbose && dprintf(1, "%s %s string search ('%c') in (%s): expected (%s) (%p), got (%s) (%p) %s\n", RED, X, (char)kase->c, kase->s, expected, expected, actual, actual, RESET);
+			success = false;
+		}
+	}
+	return (success);
 }
 
 int main(int ac, char *av[]) {
