@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/17 16:19:27 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/17 17:09:13 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -353,9 +353,43 @@ bool	test_ft_strdup(void) {
 	return (success);
 }
 
+struct s_memset_case {
+	char		*s;
+	int			c;
+	size_t	len;
+};
+
 bool	test_ft_memset(void) {
-	return (true);
+	const size_t N_CASES = 5;
+	bool success = true;
+	char *buf = NULL, *buf_mine = NULL;
+
+	struct s_memset_case mcases[] = {
+		{"abcdefghijklmnopqrstuvwxyz", 'X', 0},
+		{"abcdefghijklmnopqrstuvwxyz", 'X', 4},
+		{"abcdefghijklmnopqrstuvwxyz", '\0', 1},
+		{"àéîöœü", 'X', 4},
+		{"abcdefghijklmnopqrstuvwxyz", 'X', 26}
+	};
+
+	for (size_t i = 0; i < N_CASES; i++) {
+		buf = strdup(mcases[i].s);
+		buf_mine = strdup(mcases[i].s);
+		memset(buf, mcases[i].c, mcases[i].len);
+		ft_memset(buf_mine, mcases[i].c, mcases[i].len);
+		if (!strcmp(buf, buf_mine)) {
+			g_verbose && dprintf(1, "%s %s set memory: %s %s\n", GREEN, CHECK, buf_mine, RESET);
+		} else {
+			g_verbose && dprintf(1, "%s %s expected: %s, got: %s%s\n", RED, X, buf, buf_mine, RESET);
+			success = false;
+		}
+		buf = NULL, buf_mine = NULL;
+	}
+	free(buf);
+	free(buf_mine);
+	return (success);
 }
+
 bool	test_ft_memcpy(void) {
 	return (true);
 }
@@ -363,7 +397,7 @@ bool	test_ft_memcpy(void) {
 // III. Required ft_cat
 bool	test_ft_cat(void) {
 	int fd, success = true;
-	const char *path = "Makefile";
+	const char *path = "auteur";
 
 	if ((fd = open(path, O_RDONLY)) > 0)
 	{
@@ -378,7 +412,6 @@ bool	test_ft_cat(void) {
 // IV. Bonus
 
 bool	test_ft_memcmp(void) {
-
 	return (true);
 }
 bool	test_ft_strcmp(void) {
