@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/17 18:27:15 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/17 18:44:08 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -490,7 +490,7 @@ bool	test_ft_strcmp(void) {
 	bool success = true;
 	const size_t N_CASES = 7;
 	struct s_memcmp_case *kase = NULL;
-	int actual, expected;
+	int actual = 0, expected = 0;
 	struct s_memcmp_case cases[] = {
 		{"Hello", "Goodbye", 5},
 		{"\200", "\200", 1},
@@ -516,9 +516,47 @@ bool	test_ft_strcmp(void) {
 	return (success);
 }
 
+struct s_strcpy {
+	char *dst;
+	const char *src;
+};
+
 bool	test_ft_strcpy(void) {
-	return (true);
+	bool success = true;
+	const size_t N_CASES = 7;
+	struct s_strcpy *kase = NULL;
+	char *actual = NULL, *expected = NULL;
+	struct s_strcpy cases[] = {
+		{"....", "1234"},
+		{"..........", "{[(˚˚)]}"},
+		{"0123456789abcdef", "----------"},
+		{"", ""},
+		{"hello world", "\0"},
+		{"!!", "é"},
+		{"abc...", "abcdef"}
+	};
+
+	for (size_t i = 0; i < N_CASES; i++) {
+		kase = &(cases[i]);
+		actual = strdup(kase->dst);
+		expected = strdup(kase->dst);
+
+		strcpy(expected, kase->src);
+		ft_strcpy(actual, kase->src);
+
+		if (!strcmp(actual, expected)) {
+			g_verbose && dprintf(1, "%s %s copied %s into %s, got %s%s\n", GREEN, CHECK, kase->src, kase->dst, actual, RESET);
+		} else {
+			g_verbose && dprintf(1, "%s %s copied %s into %s, expected: %s, got %s%s\n", RED, X, kase->src, kase->dst, expected, actual, RESET);
+			success = false;
+		}
+		free(actual);
+		free(expected);
+		actual = NULL, expected = NULL;
+	}
+	return (success);
 }
+
 bool	test_ft_strequ(void) {
 	return (true);
 }
