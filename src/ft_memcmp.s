@@ -1,45 +1,33 @@
-%define CHAR_MIN -127
-
 section .text
 	global _ft_memcmp
 
-_ft_memcmp:				; int ft_memcmp(const void *s1, const void *s2, size_t n)
+_ft_memcmp:					; int memcmp(const void *s1, const void *s2)
 
-	push rbp
-	mov rbp, rsp
-
-	cmp rdx, 0			; check n == 0 ?
+	cmp rdx, 0				; check n == 0 ?
 	je _done
 
-	cmp rsi, rdi		; check s1 == s2 ?
+	cmp rsi, rdi			; s1 == s2?
 	je _done
 
-	mov rcx, 0			; counter to 0
-	mov rax, 0			; rax to 0
-	mov r10, 0
-	mov r11, 0
+	mov rcx, 0				; zero out counter
+	mov rax, 0
 
-_compare_bytes:
-	mov rcx, rdx	; set counter to max bytes to compare
-	cld
-	repe cmpsb
+_cmp_byte:
+	mov al, byte[rdi + rcx]	; put current s1 char in scratch
+	mov bl, byte[rsi + rcx] ; put current s2 char in scratch
 
-	movsx r10, byte[rdi - 1]	; s1 char val
-	movsx r11, byte[rsi - 1]	; s2 char val
+	cmp rcx, rdx
+	je _cmp_end
 
-	sub r10, r11				; difference to scratch register
+	cmp al, bl								; *s1 != *s2 ?
+	jne _cmp_end
 
-	cmp r10, CHAR_MIN			; ugly way to return unsigned comparison
-	jl _abs
-	jmp _continue
+	inc rcx
+	jmp _cmp_byte
 
-_abs:
-	shl r10, 32					; shift left for unsigned char diff
-
-_continue:
-	mov rax, r10
+_cmp_end:
+	sub al, bl
+	movsx rax, al
 
 _done:
-	mov rsp, rbp
-	pop rbp
 	ret

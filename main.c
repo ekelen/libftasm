@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/17 22:11:20 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/17 22:20:40 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -559,7 +559,7 @@ bool	test_ft_strcpy(void) {
 
 bool	test_ft_strequ(void) {
 	bool success = true;
-	const size_t N_CASES = 7;
+	const size_t N_CASES = 8;
 	struct s_memcmp_case *kase = NULL;
 	int actual = -1, expected = -1;
 	struct s_memcmp_case cases[] = {
