@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/17 22:20:40 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/17 22:20:58 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -573,12 +573,9 @@ bool	test_ft_strequ(void) {
 		{"12345", "1234", 0}
 	};
 
-	int isTheSame = -1;
-
 	for (size_t i = 0; i < N_CASES; i++) {
 		kase = &(cases[i]);
 		expected = strcmp(kase->s1, kase->s2) == 0;
-		isTheSame = expected;
 		actual = ft_strequ(kase->s1, kase->s2);
 		if (actual == expected) {
 			g_verbose && dprintf(1, "%s %s cmp (%s) (%s): %d%s\n", GREEN, CHECK, kase->s1, kase->s2, actual, RESET);
