@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/17 17:09:13 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/17 17:39:33 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,9 +302,9 @@ bool	_test_ft_strdup(bool success, const char *s1) {
 	expected = strdup(s1);
 
 	if ((diff = strcmp(actual, expected)) == 0) {
-			g_verbose && dprintf(1, "%s %s case string: %s%s\n", GREEN, CHECK, s1, RESET);
+			g_verbose && dprintf(1, "%s %s duplicated string: %s%s\n", GREEN, CHECK, s1, RESET);
 		} else {
-			g_verbose && dprintf(1, "%s %s case string: %s\nexpected 0 diff, got: %ld%s\n\n", RED, X, s1, diff, RESET);
+			g_verbose && dprintf(1, "%s %s failed duplicate: %s\nexpected 0 diff, got: %ld%s\n\n", RED, X, s1, diff, RESET);
 			success = false;
 	}
 	free(actual);
@@ -354,7 +354,7 @@ bool	test_ft_strdup(void) {
 }
 
 struct s_memset_case {
-	char		*s;
+	void		*s;
 	int			c;
 	size_t	len;
 };
@@ -375,23 +375,63 @@ bool	test_ft_memset(void) {
 	for (size_t i = 0; i < N_CASES; i++) {
 		buf = strdup(mcases[i].s);
 		buf_mine = strdup(mcases[i].s);
-		memset(buf, mcases[i].c, mcases[i].len);
-		ft_memset(buf_mine, mcases[i].c, mcases[i].len);
+		memset((void *)buf, mcases[i].c, mcases[i].len);
+		ft_memset((void *)buf_mine, mcases[i].c, mcases[i].len);
 		if (!strcmp(buf, buf_mine)) {
 			g_verbose && dprintf(1, "%s %s set memory: %s %s\n", GREEN, CHECK, buf_mine, RESET);
 		} else {
 			g_verbose && dprintf(1, "%s %s expected: %s, got: %s%s\n", RED, X, buf, buf_mine, RESET);
 			success = false;
 		}
+		free(buf);
+		free(buf_mine);
 		buf = NULL, buf_mine = NULL;
 	}
-	free(buf);
-	free(buf_mine);
 	return (success);
 }
 
+struct s_memcpy_case {
+	size_t			bufsize;
+	const char	*dstcontent;
+	const char	*src;
+	size_t			n;
+};
+
 bool	test_ft_memcpy(void) {
-	return (true);
+	const size_t N_CASES = 7;
+	bool success = true;
+	char *buf = NULL, *buf_mine = NULL;
+
+	struct s_memcpy_case cases[] = {
+		{27, "00000000000000000000000000", "abcdefghijklmnopqrstuvwxyz", 27},
+		{27, "00000000000000000000000000", "abcdefghijklmnopqrstuvwxyz", 5},
+		{27, "00000000000000000000000000", "abcdefghijklmnopqrstuvwxyz", 25},
+		{27, "00000000000000000000000000", "abcdefghijklmnopqrstuvwxyz", 1},
+		{27, "00000000000000000000000000", "åéîØü", 10},
+		{5, NULL, "åé", 5},
+		{5, NULL, "\0\0\0\0\0", 1}
+	};
+
+	for (size_t i = 0; i < N_CASES; i++) {
+		buf = realloc(buf_mine, cases[i].bufsize);
+		buf_mine = realloc(buf_mine, cases[i].bufsize);
+		if (cases[i].dstcontent != NULL) {
+			strcpy(buf, cases[i].dstcontent);
+			strcpy(buf_mine, cases[i].dstcontent);
+		}
+		memcpy((void *)buf, cases[i].src, cases[i].n);
+		ft_memcpy((void *)buf_mine, cases[i].src, cases[i].n);
+		if (!memcmp(buf, buf_mine, cases[i].n)) {
+			g_verbose && dprintf(1, "%s %s copied: %s into %s (addr: %p), got %s %s\n", GREEN, CHECK, cases[i].src, cases[i].dstcontent, buf_mine, buf_mine, RESET);
+		} else {
+			g_verbose && dprintf(1, "%s %s expected: %s, got: %s%s\n", RED, X, buf, buf_mine, RESET);
+			success = false;
+		}
+		free(buf);
+		free(buf_mine);
+		buf = NULL, buf_mine = NULL;
+	}
+	return (success);
 }
 
 // III. Required ft_cat
