@@ -16,6 +16,8 @@ _ft_memcmp:				; int ft_memcmp(const void *s1, const void *s2, size_t n)
 
 	mov rcx, 0			; counter to 0
 	mov rax, 0			; rax to 0
+	mov r10, 0
+	mov r11, 0
 
 _compare_bytes:
 	mov rcx, rdx	; set counter to max bytes to compare
