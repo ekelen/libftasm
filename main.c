@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/17 22:48:16 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/17 23:07:40 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@
 #define BOLD "\x1b[1m"
 #define GREEN "\x1b[32m"
 #define RED "\x1b[91m"
-#undef RESET
 #define RESET "\x1b[0m"
 
 #define CHECK "\xE2\x9C\x93"
@@ -44,7 +43,7 @@ typedef struct s_test
 	char const name[0x40];
 } t_test;
 
-static void run_test(t_test test)
+static bool run_test(t_test test)
 {
 	static int i = 0;
 	bool passed = 0;
@@ -62,6 +61,7 @@ static void run_test(t_test test)
 		dprintf(1, "%s*----------------------------------*\n%s", RED, RESET);
 	}
 	i++;
+	return (passed);
 }
 
 // I. Required simple
@@ -622,6 +622,8 @@ bool	test_ft_strchr(void) {
 }
 
 int main(int ac, char *av[]) {
+	size_t n_tests = 0;
+	size_t n_success = 0;
 
 	t_test tests[20] = {
 		// I. Required simple
@@ -653,21 +655,26 @@ int main(int ac, char *av[]) {
 		{test_ft_strchr, "ft_strchr"}
 	};
 
-	if (ac > 1 && (!strcmp(av[1], "--verbose") || (!strcmp(av[1], "-v"))))
-		g_verbose = true;
+	if (ac > 1 && (!strcmp(av[1], "--verbose") || (!strcmp(av[1], "-v")))) g_verbose = true;
 	if (ac > 1 + (int)g_verbose) {
 		for (int a = 1; a < ac; a++) {
 			for (int j = 0; j < 20; j++) {
 				if (!strcmp(tests[j].name, av[a])) {
-					run_test(tests[j]);
+					n_success += run_test(tests[j]);
+					n_tests++;
 				}
 			}
 		}
 	} else {
 		for (int i = 0; i < 20; i++)
 		{
-			run_test(tests[i]);
+			n_success += run_test(tests[i]);
+			n_tests++;
 		}
 	}
+	dprintf(1, "\n%s*----------------------------------*\n", BOLD);
+	dprintf(1, "        🏁  Finished! 🏁\n\n");
+	dprintf(1, "TESTS SUCCEEDED: %ld/%ld\n", n_success, n_tests);
+	dprintf(1, "*----------------------------------*%s\n", RESET);
 	return (0);
 }
