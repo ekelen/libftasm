@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/16 20:09:26 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/17 16:19:27 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,6 @@
 
 #define CHECK "\xE2\x9C\x93"
 #define X "\xe2\x9c\x97"
-
-#define CASE 0x1
-#define TEST 0x10
 
 bool g_verbose = false;
 
@@ -297,9 +294,65 @@ bool	test_ft_strlen(void) {
 	return (success);
 }
 
-bool	test_ft_strdup(void) {
-	return (true);
+bool	_test_ft_strdup(bool success, const char *s1) {
+	char *actual = NULL, *expected = NULL;
+	size_t diff;
+
+	actual = ft_strdup(s1);
+	expected = strdup(s1);
+
+	if ((diff = strcmp(actual, expected)) == 0) {
+			g_verbose && dprintf(1, "%s %s case string: %s%s\n", GREEN, CHECK, s1, RESET);
+		} else {
+			g_verbose && dprintf(1, "%s %s case string: %s\nexpected 0 diff, got: %ld%s\n\n", RED, X, s1, diff, RESET);
+			success = false;
+	}
+	free(actual);
+	free(expected);
+	return (success);
 }
+
+bool	test_ft_strdup(void) {
+	// TODO: Info re unexpected bvr. strdup(NULL) segfault.
+	bool success = true;
+
+	// basic tests
+	const size_t N_BASIC_CASES = 7;
+	char *case_basic[] = {
+		"",
+		"🇨🇦",
+		"↓↑",
+		"String\0 Interrupted",
+		"abcdefghijklmnopqrstuvwxyz",
+		"Érable",
+		"All that is gold does not glitter, / Not all those who wander are lost; \
+			/ The old that is strong does not wither, / Deep roots are not reached by the frost. \
+			/ From the ashes a fire shall be woken, / A light from the shadows shall spring; \
+			/ Renewed shall be blade that was broken, / The crownless again shall be king."
+	};
+	for (size_t i = 0; i < N_BASIC_CASES; i++) {
+		success = _test_ft_strdup(success, case_basic[i]);
+	}
+
+	// Long strings
+	char *long_str = (char *)malloc(BUFSIZ * sizeof(char));
+
+	memset(long_str, 'x', BUFSIZ - 1);
+	long_str[BUFSIZ - 1] = 0;
+	success = _test_ft_strdup(success, long_str);
+
+	long_str[0] = 0;
+	success = _test_ft_strdup(success, long_str);
+
+	long_str = realloc(long_str, BUFSIZ * 10);
+	memset(long_str, '.', (BUFSIZ * 10));
+	long_str[(BUFSIZ * 10) - 1] = 0;
+	success = _test_ft_strdup(success, long_str);
+
+	free(long_str);
+	return (success);
+}
+
 bool	test_ft_memset(void) {
 	return (true);
 }
@@ -309,12 +362,23 @@ bool	test_ft_memcpy(void) {
 
 // III. Required ft_cat
 bool	test_ft_cat(void) {
-	return (true);
+	int fd, success = true;
+	const char *path = "Makefile";
+
+	if ((fd = open(path, O_RDONLY)) > 0)
+	{
+		ft_cat(fd);
+		close(fd);
+	} else {
+		dprintf(2, "%s Error opening file: %s %s", RED, strerror(errno), RESET);
+	}
+	return (success);
 }
 
 // IV. Bonus
 
 bool	test_ft_memcmp(void) {
+
 	return (true);
 }
 bool	test_ft_strcmp(void) {
