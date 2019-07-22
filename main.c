@@ -170,7 +170,11 @@ struct s_str_size {
 
 bool	test_ft_bzero(void) {
 	// TODO: Music Falls Around Her
+	// TODO: Decide how to handle
+	// need to test 0, too-big nums
 	bool success = true;
+
+	// -------------- old way
 	// const size_t N_CASES = 7, BUFLEN = 300;
 	// char copy_buf[BUFLEN] = "", buf[BUFLEN] = "";
 	// size_t len;
@@ -184,6 +188,25 @@ bool	test_ft_bzero(void) {
 	// 	"The Road goes ever on and on, / Down from the door where it began. / Now far ahead the Road has gone, / And I must follow, if I can, / Pursuing it with eager feet, / Until it joins some larger way / Where many paths and errands meet. / And whither then? I cannot say."
 	// };
 
+		// for (size_t i = 0; i < N_CASES; i++) {
+	// 	bzero(buf, BUFLEN);
+	// 	bzero(copy_buf, BUFLEN);
+	// 	strcpy(buf, test_case[i]);
+	// 	strcpy(copy_buf, test_case[i]);
+
+	// 	len = strlen(test_case[i]);
+	// 	bzero(test_case[i], len);
+	// 	ft_bzero(copy_buf, len);
+
+	// 	if (!memcmp(test_case[i], copy_buf, BUFLEN)) {
+	// 		g_verbose && dprintf(1, "%s %s %s %s\n", GREEN, CHECK, buf, RESET);
+	// 	} else {
+	// 		g_verbose && dprintf(1, "%s %s %s %s\n", RED, X, buf, RESET);
+	// 		success = false;
+	// 	}
+	// }
+
+	// ---------------- new way, doesn't make much sense, but need to test 0 and too big
 	const size_t N_CASES2 = 5;
 	struct s_str_size cases[] = {
 		{"", 0},
@@ -215,23 +238,7 @@ bool	test_ft_bzero(void) {
 	}
 
 
-	// for (size_t i = 0; i < N_CASES; i++) {
-	// 	bzero(buf, BUFLEN);
-	// 	bzero(copy_buf, BUFLEN);
-	// 	strcpy(buf, test_case[i]);
-	// 	strcpy(copy_buf, test_case[i]);
 
-	// 	len = strlen(test_case[i]);
-	// 	bzero(test_case[i], len);
-	// 	ft_bzero(copy_buf, len);
-
-	// 	if (!memcmp(test_case[i], copy_buf, BUFLEN)) {
-	// 		g_verbose && dprintf(1, "%s %s %s %s\n", GREEN, CHECK, buf, RESET);
-	// 	} else {
-	// 		g_verbose && dprintf(1, "%s %s %s %s\n", RED, X, buf, RESET);
-	// 		success = false;
-	// 	}
-	// }
 	return (success);
 }
 
@@ -656,47 +663,34 @@ bool	test_ft_strchr(void) {
 	return (success);
 }
 
+bool	_test_ft_memalloc(void *expected, void *actual, size_t size, bool success) {
+	if ((bool)expected ^ (bool)actual) {
+		g_verbose && dprintf(1, "%s%s fail on %zu bytes%s\n", RED, X, size, RESET);
+		return false;
+	} else if (expected && actual && size > 0 && memcmp(actual, expected, size)) {
+		g_verbose && dprintf(1, "%s%s fail on %zu bytes%s\n", RED, X, size, RESET);
+		printf("fail memcmp\n");
+		return false;
+	} else {
+		g_verbose && dprintf(1, "%s%s success on %zu bytes%s\n", GREEN, CHECK, size, RESET);
+		return success;
+	}
+}
+
 bool	test_ft_memalloc(void) {
 	char *actual = NULL, *expected = NULL;
 	bool success = true;
+	size_t cases[8] = {0, 5, UINT64_MAX, 1, 10, 255, UINT16_MAX + UINT32_MAX, 8};
 
-	
-	expected = malloc(0);
-	bzero(expected, (0));
-	printf("expected with size 0: %p\n", expected);
-
-	actual = ft_memalloc(0);
-	printf("mine with size 0:     %p\n", actual);
-	
-
-	free(actual);
-	free(expected);
-
-	expected = malloc(UINT64_MAX * 10);
-	if (expected)
-		bzero(expected, (UINT64_MAX * 10));
-	printf("expected with size UINT64_MAX * 10: %p\n", expected);
-
-	actual = ft_memalloc(UINT64_MAX * 10);
-	if (actual)
-		printf("mine with size UINT64_MAX * 10:     %p\n", actual);
-
-	if (actual) free(actual);
-	if (actual) free(expected);
-
-
-	expected = malloc(10);
-	if (expected)
-		bzero(expected, (10));
-	printf("expected with size 10: %p\n", expected);
-
-	actual = ft_memalloc(10);
-	if (actual)
-		printf("mine with size 10:     %p\n", actual);
-
-	if (actual) free(actual);
-	if (actual) free(expected);
-
+	for (size_t i = 0; i < 8; i++) {
+		expected = NULL;
+		expected = (void *)malloc(sizeof(char) * cases[i]);
+		if (expected) bzero(expected, cases[i]);
+		actual = ft_memalloc(cases[i]);
+		success = _test_ft_memalloc(expected, actual, cases[i], success);
+		if (actual) free(actual);
+		if (expected) free(expected);
+	}
 	return (success);
 }
 
