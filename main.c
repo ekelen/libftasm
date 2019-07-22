@@ -163,45 +163,75 @@ bool	test_ft_tolower(void) {
 	return (success);
 }
 
-typedef struct s_str_size {
+struct s_str_size {
 	const char	*s;
 	size_t		n;
-}
+};
 
 bool	test_ft_bzero(void) {
 	// TODO: Music Falls Around Her
 	bool success = true;
-	const size_t N_CASES = 7, BUFLEN = 300;
-	char copy_buf[BUFLEN] = "", buf[BUFLEN] = "";
-	size_t len;
-	char test_case[][BUFLEN] = {
-		"",
-		"\0",
-		"Hi",
-		"Bye",
-		"École 42",
-		"érable 🍁",
-		"The Road goes ever on and on, / Down from the door where it began. / Now far ahead the Road has gone, / And I must follow, if I can, / Pursuing it with eager feet, / Until it joins some larger way / Where many paths and errands meet. / And whither then? I cannot say."
+	// const size_t N_CASES = 7, BUFLEN = 300;
+	// char copy_buf[BUFLEN] = "", buf[BUFLEN] = "";
+	// size_t len;
+	// char test_case[][BUFLEN] = {
+	// 	"",
+	// 	"\0",
+	// 	"Hi",
+	// 	"Bye",
+	// 	"École 42",
+	// 	"érable 🍁",
+	// 	"The Road goes ever on and on, / Down from the door where it began. / Now far ahead the Road has gone, / And I must follow, if I can, / Pursuing it with eager feet, / Until it joins some larger way / Where many paths and errands meet. / And whither then? I cannot say."
+	// };
+
+	const size_t N_CASES2 = 5;
+	struct s_str_size cases[] = {
+		{"", 0},
+		{"", 0},
+		{"\0", 2},
+		{"Bonjour", 8},
+		{"École 42", 9}, // assumes É == 2 bytes
+		{"The Road goes ever on and on, / Down from the door where it began. / Now far ahead the Road has gone, / And I must follow, if I can, / Pursuing it with eager feet, / Until it joins some larger way / Where many paths and errands meet. / And whither then? I cannot say.", 267}
 	};
 
+	char *expected = NULL, *actual = NULL;
 
-	for (size_t i = 0; i < N_CASES; i++) {
-		bzero(buf, BUFLEN);
-		bzero(copy_buf, BUFLEN);
-		strcpy(buf, test_case[i]);
-		strcpy(copy_buf, test_case[i]);
+	(void)actual;
+	// (void)expected;
+	(void)cases;
+	for (size_t j = 0; j < N_CASES2; j++) {
+		expected = malloc(cases[j].n);
+		bzero(expected, cases[j].n);
 
-		len = strlen(test_case[i]);
-		bzero(test_case[i], len);
-		ft_bzero(copy_buf, len);
+		actual = malloc(cases[j].n);
+		ft_bzero(actual, cases[j].n);
+		
 
-		if (!memcmp(test_case[i], copy_buf, BUFLEN)) {
-			g_verbose && dprintf(1, "%s %s %s %s\n", GREEN, CHECK, buf, RESET);
-		} else {
-			g_verbose && dprintf(1, "%s %s %s %s\n", RED, X, buf, RESET);
-			success = false;
-		}
+
+		free(expected);
+		free(actual);
+		expected = NULL;
+		actual = NULL;
 	}
+
+
+	// for (size_t i = 0; i < N_CASES; i++) {
+	// 	bzero(buf, BUFLEN);
+	// 	bzero(copy_buf, BUFLEN);
+	// 	strcpy(buf, test_case[i]);
+	// 	strcpy(copy_buf, test_case[i]);
+
+	// 	len = strlen(test_case[i]);
+	// 	bzero(test_case[i], len);
+	// 	ft_bzero(copy_buf, len);
+
+	// 	if (!memcmp(test_case[i], copy_buf, BUFLEN)) {
+	// 		g_verbose && dprintf(1, "%s %s %s %s\n", GREEN, CHECK, buf, RESET);
+	// 	} else {
+	// 		g_verbose && dprintf(1, "%s %s %s %s\n", RED, X, buf, RESET);
+	// 		success = false;
+	// 	}
+	// }
 	return (success);
 }
 
@@ -630,21 +660,43 @@ bool	test_ft_memalloc(void) {
 	char *actual = NULL, *expected = NULL;
 	bool success = true;
 
-	actual = ft_memalloc(0);
+	
 	expected = malloc(0);
-	printf("minne with size 0:    %p\n", actual);
+	bzero(expected, (0));
 	printf("expected with size 0: %p\n", expected);
+
+	actual = ft_memalloc(0);
+	printf("mine with size 0:     %p\n", actual);
+	
 
 	free(actual);
 	free(expected);
 
-	// actual = ft_memalloc(UINT64_MAX * 10);
-	// expected = malloc(UINT64_MAX * 10);
-	// printf("minne with size huge:    %p\n", actual);
-	// printf("expected with size huge: %p\n", expected);
+	expected = malloc(UINT64_MAX * 10);
+	if (expected)
+		bzero(expected, (UINT64_MAX * 10));
+	printf("expected with size UINT64_MAX * 10: %p\n", expected);
 
-	// free(actual);
-	// free(expected);
+	actual = ft_memalloc(UINT64_MAX * 10);
+	if (actual)
+		printf("mine with size UINT64_MAX * 10:     %p\n", actual);
+
+	if (actual) free(actual);
+	if (actual) free(expected);
+
+
+	expected = malloc(10);
+	if (expected)
+		bzero(expected, (10));
+	printf("expected with size 10: %p\n", expected);
+
+	actual = ft_memalloc(10);
+	if (actual)
+		printf("mine with size 10:     %p\n", actual);
+
+	if (actual) free(actual);
+	if (actual) free(expected);
+
 	return (success);
 }
 
