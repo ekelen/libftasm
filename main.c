@@ -163,82 +163,34 @@ bool	test_ft_tolower(void) {
 	return (success);
 }
 
-struct s_str_size {
-	const char	*s;
-	size_t		n;
-};
+bool	_test_ft_bzero(void *expected, void *actual, size_t size, bool success) {
+	if ((bool)expected ^ (bool)actual) {
+		g_verbose && dprintf(1, "%s%s fail on %zu bytes%s\n", RED, X, size, RESET);
+		return false;
+	} else if (expected && actual && size > 0 && memcmp(actual, expected, size)) {
+		g_verbose && dprintf(1, "%s%s fail on %zu bytes%s\n", RED, X, size, RESET);
+		printf("fail memcmp\n");
+		return false;
+	} else {
+		g_verbose && dprintf(1, "%s%s success on %zu bytes%s\n", GREEN, CHECK, size, RESET);
+		return success;
+	}
+}
 
 bool	test_ft_bzero(void) {
-	// TODO: Music Falls Around Her
-	// TODO: Decide how to handle
-	// need to test 0, too-big nums
+	char *actual = NULL, *expected = NULL;
 	bool success = true;
-
-	// -------------- old way
-	// const size_t N_CASES = 7, BUFLEN = 300;
-	// char copy_buf[BUFLEN] = "", buf[BUFLEN] = "";
-	// size_t len;
-	// char test_case[][BUFLEN] = {
-	// 	"",
-	// 	"\0",
-	// 	"Hi",
-	// 	"Bye",
-	// 	"École 42",
-	// 	"érable 🍁",
-	// 	"The Road goes ever on and on, / Down from the door where it began. / Now far ahead the Road has gone, / And I must follow, if I can, / Pursuing it with eager feet, / Until it joins some larger way / Where many paths and errands meet. / And whither then? I cannot say."
-	// };
-
-		// for (size_t i = 0; i < N_CASES; i++) {
-	// 	bzero(buf, BUFLEN);
-	// 	bzero(copy_buf, BUFLEN);
-	// 	strcpy(buf, test_case[i]);
-	// 	strcpy(copy_buf, test_case[i]);
-
-	// 	len = strlen(test_case[i]);
-	// 	bzero(test_case[i], len);
-	// 	ft_bzero(copy_buf, len);
-
-	// 	if (!memcmp(test_case[i], copy_buf, BUFLEN)) {
-	// 		g_verbose && dprintf(1, "%s %s %s %s\n", GREEN, CHECK, buf, RESET);
-	// 	} else {
-	// 		g_verbose && dprintf(1, "%s %s %s %s\n", RED, X, buf, RESET);
-	// 		success = false;
-	// 	}
-	// }
-
-	// ---------------- new way, doesn't make much sense, but need to test 0 and too big
-	const size_t N_CASES2 = 5;
-	struct s_str_size cases[] = {
-		{"", 0},
-		{"", 0},
-		{"\0", 2},
-		{"Bonjour", 8},
-		{"École 42", 9}, // assumes É == 2 bytes
-		{"The Road goes ever on and on, / Down from the door where it began. / Now far ahead the Road has gone, / And I must follow, if I can, / Pursuing it with eager feet, / Until it joins some larger way / Where many paths and errands meet. / And whither then? I cannot say.", 267}
-	};
-
-	char *expected = NULL, *actual = NULL;
-
-	(void)actual;
-	// (void)expected;
-	(void)cases;
-	for (size_t j = 0; j < N_CASES2; j++) {
-		expected = malloc(cases[j].n);
-		bzero(expected, cases[j].n);
-
-		actual = malloc(cases[j].n);
-		ft_bzero(actual, cases[j].n);
-		
-
-
-		free(expected);
-		free(actual);
-		expected = NULL;
-		actual = NULL;
+	size_t N_CASES = 8;
+	size_t cases[] = {0, 5, UINT64_MAX, 1, 10, 255, UINT16_MAX + UINT32_MAX, 8};
+	for (size_t i = 0; i < N_CASES; i++) {
+		expected = realloc(expected, sizeof(char) * cases[i]);
+		if (expected) bzero(expected, cases[i]);
+		actual = realloc(actual, sizeof(char) * cases[i]);
+		if (actual) ft_bzero(actual, cases[i]);
+		success = _test_ft_bzero(expected, actual, cases[i], success);
 	}
-
-
-
+	if (actual) free(actual);
+	if (expected) free(expected);
 	return (success);
 }
 
@@ -398,7 +350,7 @@ bool	test_ft_strdup(void) {
 struct s_memset_case {
 	void		*s;
 	int			c;
-	size_t	len;
+	size_t		len;
 };
 
 bool	test_ft_memset(void) {
@@ -434,8 +386,8 @@ bool	test_ft_memset(void) {
 
 struct s_memcpy_case {
 	size_t			bufsize;
-	const char	*dstcontent;
-	const char	*src;
+	const char		*dstcontent;
+	const char		*src;
 	size_t			n;
 };
 
@@ -479,7 +431,7 @@ bool	test_ft_memcpy(void) {
 // III. Required ft_cat
 bool	test_ft_cat(void) {
 	int fd, success = true;
-	const char *path = "auteur";
+	const char *path = "auteur";		// replace me with a valid file
 
 	if ((fd = open(path, O_RDONLY)) > 0)
 	{
@@ -683,7 +635,7 @@ bool	test_ft_memalloc(void) {
 	size_t cases[8] = {0, 5, UINT64_MAX, 1, 10, 255, UINT16_MAX + UINT32_MAX, 8};
 
 	for (size_t i = 0; i < 8; i++) {
-		expected = NULL;
+		expected = NULL, actual = NULL;
 		expected = (void *)malloc(sizeof(char) * cases[i]);
 		if (expected) bzero(expected, cases[i]);
 		actual = ft_memalloc(cases[i]);
