@@ -621,11 +621,33 @@ bool	test_ft_strchr(void) {
 	return (success);
 }
 
+bool	test_ft_memalloc(void) {
+	char *actual = NULL, *expected = NULL;
+	bool success = true;
+
+	actual = malloc(0);
+	expected = malloc(0);
+	printf("minne with size 0:    %p\n", actual);
+	printf("expected with size 0: %p\n", expected);
+
+	free(actual);
+	free(expected);
+
+	actual = malloc(UINT64_MAX * 10);
+	expected = malloc(UINT64_MAX * 10);
+	printf("minne with size huge:    %p\n", actual);
+	printf("expected with size huge: %p\n", expected);
+
+	free(actual);
+	free(expected);
+	return (success);
+}
+
 int main(int ac, char *av[]) {
 	size_t n_tests = 0;
 	size_t n_success = 0;
 
-	t_test tests[20] = {
+	t_test tests[21] = {
 		// I. Required simple
 		{test_ft_isalpha, "ft_isalpha"},
 		{test_ft_isdigit, "ft_isdigit"},
@@ -652,13 +674,14 @@ int main(int ac, char *av[]) {
 		{test_ft_strcmp, "ft_strcmp"},
 		{test_ft_strcpy, "ft_strcpy"},
 		{test_ft_strequ, "ft_strequ"},
-		{test_ft_strchr, "ft_strchr"}
+		{test_ft_strchr, "ft_strchr"},
+		{test_ft_memalloc, "ft_memalloc"}
 	};
 
 	if (ac > 1 && (!strcmp(av[1], "--verbose") || (!strcmp(av[1], "-v")))) g_verbose = true;
 	if (ac > 1 + (int)g_verbose) {
 		for (int a = 1; a < ac; a++) {
-			for (int j = 0; j < 20; j++) {
+			for (int j = 0; j < 21; j++) {
 				if (!strcmp(tests[j].name, av[a])) {
 					n_success += run_test(tests[j]);
 					n_tests++;
@@ -666,7 +689,7 @@ int main(int ac, char *av[]) {
 			}
 		}
 	} else {
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 21; i++)
 		{
 			n_success += run_test(tests[i]);
 			n_tests++;
