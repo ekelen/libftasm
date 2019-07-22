@@ -163,6 +163,11 @@ bool	test_ft_tolower(void) {
 	return (success);
 }
 
+typedef struct s_str_size {
+	const char	*s;
+	size_t		n;
+}
+
 bool	test_ft_bzero(void) {
 	// TODO: Music Falls Around Her
 	bool success = true;
