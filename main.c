@@ -625,7 +625,7 @@ bool	test_ft_memalloc(void) {
 	char *actual = NULL, *expected = NULL;
 	bool success = true;
 
-	actual = malloc(0);
+	actual = ft_memalloc(0);
 	expected = malloc(0);
 	printf("minne with size 0:    %p\n", actual);
 	printf("expected with size 0: %p\n", expected);
@@ -633,13 +633,13 @@ bool	test_ft_memalloc(void) {
 	free(actual);
 	free(expected);
 
-	actual = malloc(UINT64_MAX * 10);
-	expected = malloc(UINT64_MAX * 10);
-	printf("minne with size huge:    %p\n", actual);
-	printf("expected with size huge: %p\n", expected);
+	// actual = ft_memalloc(UINT64_MAX * 10);
+	// expected = malloc(UINT64_MAX * 10);
+	// printf("minne with size huge:    %p\n", actual);
+	// printf("expected with size huge: %p\n", expected);
 
-	free(actual);
-	free(expected);
+	// free(actual);
+	// free(expected);
 	return (success);
 }
 

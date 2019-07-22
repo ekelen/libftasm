@@ -33,6 +33,7 @@ SRCS += ft_toupper.s
 
 # BONUS
 
+SRCS += ft_memalloc.s
 SRCS += ft_memcmp.s
 SRCS += ft_strcmp.s
 SRCS += ft_strcpy.s
