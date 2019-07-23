@@ -3,6 +3,11 @@ section .text
 	global _ft_strequ
 
 _ft_strequ:				; int ft_strequ(char const *s1, char const *s2)
+	push rbp
+	mov rbp, rsp
+
+	mov rax, 0
+
 	call _ft_strcmp
 	cmp rax, 0
 	je _equal
@@ -16,4 +21,5 @@ _equal:
 	jmp _return
 
 _return:
+	pop rbp
 	ret

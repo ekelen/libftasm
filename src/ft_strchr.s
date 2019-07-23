@@ -19,6 +19,8 @@ _search:
 		jmp 		_search
 
 _null_found:
+		cmp			al, 0					; c == \0 ?
+		je			_found
 		mov			rax, 0
 		pop			rdi
 		jmp     _return

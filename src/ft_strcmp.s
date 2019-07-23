@@ -4,6 +4,7 @@ section .text
 _ft_strcmp:					; int strcmp(const char *s1, const char *s2)
 
 	mov rcx, 0				; zero out counter
+	mov rax, 0
 
 	cmp rsi, rdi			; s1 == s2?
 	je _done

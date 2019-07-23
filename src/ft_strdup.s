@@ -17,7 +17,7 @@ _ft_strdup:					; char *ft_strdup(const char *s1)
 	push rax					; save strlen
 	mov rdi, rax			; prepare to send to malloc
 
-	call _malloc
+	call _malloc			; TODO: test malloc fail
 
 	; set up vars for call to memcpy
 	mov rdi, rax			; malloc return val -> dst
