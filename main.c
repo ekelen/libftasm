@@ -35,6 +35,8 @@
 #define CHECK "\xE2\x9C\x93"
 #define X "\xe2\x9c\x97"
 
+#define N_FUNCTIONS 20
+
 bool g_verbose = false;
 
 typedef struct s_test
@@ -615,42 +617,11 @@ bool	test_ft_strchr(void) {
 	return (success);
 }
 
-bool	_test_ft_memalloc(void *expected, void *actual, size_t size, bool success) {
-	if ((bool)expected ^ (bool)actual) {
-		g_verbose && dprintf(1, "%s%s fail on %zu bytes%s\n", RED, X, size, RESET);
-		return false;
-	} else if (expected && actual && size > 0 && memcmp(actual, expected, size)) {
-		g_verbose && dprintf(1, "%s%s fail on %zu bytes%s\n", RED, X, size, RESET);
-		printf("fail memcmp\n");
-		return false;
-	} else {
-		g_verbose && dprintf(1, "%s%s success on %zu bytes%s\n", GREEN, CHECK, size, RESET);
-		return success;
-	}
-}
-
-bool	test_ft_memalloc(void) {
-	char *actual = NULL, *expected = NULL;
-	bool success = true;
-	size_t cases[8] = {0, 5, UINT64_MAX, 1, 10, 255, UINT16_MAX + UINT32_MAX, 8};
-
-	for (size_t i = 0; i < 8; i++) {
-		expected = NULL, actual = NULL;
-		expected = (void *)malloc(sizeof(char) * cases[i]);
-		if (expected) bzero(expected, cases[i]);
-		actual = ft_memalloc(cases[i]);
-		success = _test_ft_memalloc(expected, actual, cases[i], success);
-		if (actual) free(actual);
-		if (expected) free(expected);
-	}
-	return (success);
-}
-
 int main(int ac, char *av[]) {
 	size_t n_tests = 0;
 	size_t n_success = 0;
 
-	t_test tests[21] = {
+	t_test tests[N_FUNCTIONS] = {
 		// I. Required simple
 		{test_ft_isalpha, "ft_isalpha"},
 		{test_ft_isdigit, "ft_isdigit"},
@@ -677,14 +648,13 @@ int main(int ac, char *av[]) {
 		{test_ft_strcmp, "ft_strcmp"},
 		{test_ft_strcpy, "ft_strcpy"},
 		{test_ft_strequ, "ft_strequ"},
-		{test_ft_strchr, "ft_strchr"},
-		{test_ft_memalloc, "ft_memalloc"}
+		{test_ft_strchr, "ft_strchr"}
 	};
 
 	if (ac > 1 && (!strcmp(av[1], "--verbose") || (!strcmp(av[1], "-v")))) g_verbose = true;
 	if (ac > 1 + (int)g_verbose) {
 		for (int a = 1; a < ac; a++) {
-			for (int j = 0; j < 21; j++) {
+			for (int j = 0; j < N_FUNCTIONS; j++) {
 				if (!strcmp(tests[j].name, av[a])) {
 					n_success += run_test(tests[j]);
 					n_tests++;
@@ -692,7 +662,7 @@ int main(int ac, char *av[]) {
 			}
 		}
 	} else {
-		for (int i = 0; i < 21; i++)
+		for (int i = 0; i < N_FUNCTIONS; i++)
 		{
 			n_success += run_test(tests[i]);
 			n_tests++;

@@ -50,7 +50,6 @@ void		ft_cat(int fd);
 */
 
 char		*ft_strcpy(char *dst, const char *src);
-void		*ft_memalloc(size_t size);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strequ(char const *s1, char const *s2);
