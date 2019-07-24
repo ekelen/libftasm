@@ -560,17 +560,18 @@ bool	test_ft_strcpy(void) {
 
 bool	test_ft_strequ(void) {
 	bool success = true;
-	const size_t N_CASES = 8;
+	const size_t N_CASES = 9;
 	struct s_memcmp_case *kase = NULL;
 	int actual = -1, expected = -1;
 	struct s_memcmp_case cases[] = {
-		{"Hello", "Goodbye", 5},
-		{"\200", "\200", 1},
-		{"école 42", "ecole 42", 8},
-		{"", "123", 1},
-		{"42 school", "21 school", 1},
-		{"1234", "1234", 4},
-		{"", "", 1},
+		{"Hello", "Goodbye", 0},
+		{"\200", "\200", 0},
+		{"\200", "\0", 0},
+		{"école 42", "ecole 42", 0},
+		{"", "123", 0},
+		{"42 school", "21 school", 0},
+		{"1234", "1234", 0},
+		{"", "", 0},
 		{"12345", "1234", 0}
 	};
 
