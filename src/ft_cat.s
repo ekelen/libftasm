@@ -18,8 +18,7 @@ section .text
 
 _ft_cat:							; void ft_cat(int fd)
 
-	push rbp
-	mov rbp, rsp
+	enter 0x10, 0
 
 _read:
 	lea rsi, [rel buf]	; memory addr of buf -> rsi
@@ -57,7 +56,5 @@ _err:					; set up err msg display
 
 _done:
 	pop rdi				; pop fd a final time
-	mov rsp, rbp
-
-	pop rbp				; epilogue
+	leave
 	ret

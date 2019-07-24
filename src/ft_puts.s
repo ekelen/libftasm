@@ -10,8 +10,7 @@ section .text
 
 _ft_puts:						; int ft_puts(const char *s)
 
-	push rbp
-	mov	rbp, rsp
+	enter 0x10, 0
 
 	cmp rdi, 0				; s is null ptr ?
 	je _no_string
@@ -49,6 +48,6 @@ _no_string:
 	jmp _done
 
 _done:
-	pop	rbp
+	leave
 	ret
 

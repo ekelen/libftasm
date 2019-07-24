@@ -1,0 +1,6 @@
+For Vogversion:
+
+[ ]  Delete registers.txt
+[ ]  Prolog/epilog everywhere
+[ ]  42 header on .h and main file
+[ ]  Delete this

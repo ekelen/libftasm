@@ -21,7 +21,7 @@ In source files in the root of the cloned repository:
 
 ```bash
 libftasm$ make re; make test
-libftasm$ ./a.out
+libftasm$ ./a.out [-v|--verbose] [function names...]
 ```
 
 ## Cleanup

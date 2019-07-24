@@ -185,14 +185,16 @@ bool	test_ft_bzero(void) {
 	size_t N_CASES = 8;
 	size_t cases[] = {0, 5, UINT64_MAX, 1, 10, 255, UINT16_MAX + UINT32_MAX, 8};
 	for (size_t i = 0; i < N_CASES; i++) {
-		expected = realloc(expected, sizeof(char) * cases[i]);
+		expected = malloc(sizeof(char) * cases[i]);
 		if (expected) bzero(expected, cases[i]);
-		actual = realloc(actual, sizeof(char) * cases[i]);
+		actual = malloc(sizeof(char) * cases[i]);
 		if (actual) ft_bzero(actual, cases[i]);
 		success = _test_ft_bzero(expected, actual, cases[i], success);
+
+		if (actual) free(actual);
+		if (expected) free(expected);
+		actual = NULL, expected = NULL;
 	}
-	if (actual) free(actual);
-	if (expected) free(expected);
 	return (success);
 }
 
@@ -212,7 +214,7 @@ bool	test_ft_puts(void) {
 	for (size_t i = 0; i < N_CASES; i++) {
 		actual = ft_puts(cases[i]);
 		expected = puts(cases[i]);
-		if (actual == expected) {
+		if (!(actual | expected) || (actual>>31 == expected>>31)) { // same sign or both zero
 			g_verbose && dprintf(1, "%s %s %s\n", GREEN, CHECK, RESET);
 		} else {
 			g_verbose && dprintf(1, "%s %s expected: %d, got: %d%s\n", RED, X, expected, actual, RESET);
@@ -309,7 +311,6 @@ bool	_test_ft_strdup(bool success, const char *s1) {
 }
 
 bool	test_ft_strdup(void) {
-	// TODO: Info re unexpected bvr. strdup(NULL) segfault.
 	bool success = true;
 
 	// basic tests
@@ -340,7 +341,9 @@ bool	test_ft_strdup(void) {
 	long_str[0] = 0;
 	success = _test_ft_strdup(success, long_str);
 
-	long_str = realloc(long_str, BUFSIZ * 10);
+	free(long_str);
+
+	long_str = (char *)malloc(BUFSIZ * 10);
 	memset(long_str, '.', (BUFSIZ * 10));
 	long_str[(BUFSIZ * 10) - 1] = 0;
 	success = _test_ft_strdup(success, long_str);
@@ -454,13 +457,14 @@ struct s_memcmp_case {
 
 bool	test_ft_memcmp(void) {
 	bool success = true;
-	const size_t N_CASES = 7;
+	const size_t N_CASES = 8;
 	struct s_memcmp_case *kase = NULL;
 	int actual, expected;
 	struct s_memcmp_case cases[] = {
 		{"Hello", "Goodbye", 5},
+		{"\0", "\200", 1},
 		{"\200", "\200", 1},
-		{"école 42", "ecole 42", 8}, // TODO: Hmm.. Is ok because undefined if >byte ?
+		{"école 42", "ecole 42", 8},
 		{"", "123", 1},
 		{"42 school", "21 school", 1},
 		{"1234", "1234", 4},
@@ -469,13 +473,13 @@ bool	test_ft_memcmp(void) {
 
 	for (size_t i = 0; i < N_CASES; i++) {
 		kase = &(cases[i]);
-		expected = (memcmp(kase->s1, kase->s2, kase->n));
-		actual = (ft_memcmp(kase->s1, kase->s2, kase->n));
+		expected = memcmp(kase->s1, kase->s2, kase->n);
+		actual = ft_memcmp(kase->s1, kase->s2, kase->n);
 
 		if (actual == expected) {
-			g_verbose && dprintf(1, "%s %s cmp %ld bytes: (%s) (%s): %d%s\n", GREEN, CHECK, kase->n, kase->s1, kase->s2, actual, RESET);
+			g_verbose && dprintf(1, "%s %s cmp %ld bytes: (%s) (%s): expected: %d, got: %d%s\n", GREEN, CHECK, kase->n, kase->s1, kase->s2, expected, actual, RESET);
 		} else {
-			g_verbose && dprintf(1, "%s %s cmp %ld bytes: (%s) (%s): expected: %d, got: %d%s\n", RED, X, kase->n, kase->s1, kase->s2, actual, expected, RESET);
+			g_verbose && dprintf(1, "%s %s cmp %ld bytes: (%s) (%s): expected: %d, got: %d%s\n", RED, X, kase->n, kase->s1, kase->s2, expected, actual, RESET);
 			success = false;
 		}
 	}
@@ -488,24 +492,25 @@ bool	test_ft_strcmp(void) {
 	struct s_memcmp_case *kase = NULL;
 	int actual = 0, expected = 0;
 	struct s_memcmp_case cases[] = {
-		{"Hello", "Goodbye", 5},
-		{"\200", "\200", 1},
-		{"école 42", "ecole 42", 8}, // TODO: Hmm.. Is ok because undefined if >byte ?
-		{"", "123", 1},
-		{"42 school", "21 school", 1},
-		{"1234", "1234", 4},
-		{"", "", 1}
+		{"\0", "\200", 0}, // cmp 0, 128
+		{"Hello", "Goodbye", 0},
+		{"Goodbye", "Hello", 0},
+		{"école 42", "ecole 42", 0},
+		{"", "123", 0},
+		{"42 school", "21 school", 0},
+		{"1234", "1234", 0},
+		{"", "", 0}
 	};
 
 	for (size_t i = 0; i < N_CASES; i++) {
 		kase = &(cases[i]);
-		expected = (strcmp(kase->s1, kase->s2));
-		actual = (ft_strcmp(kase->s1, kase->s2));
+		expected = strcmp(kase->s1, kase->s2);
+		actual = ft_strcmp(kase->s1, kase->s2);
 
 		if (actual == expected) {
-			g_verbose && dprintf(1, "%s %s cmp (%s) (%s): %d%s\n", GREEN, CHECK, kase->s1, kase->s2, actual, RESET);
+			g_verbose && dprintf(1, "%s %s cmp (%s) (%s): expected: %d, got: %d%s\n", GREEN, CHECK, kase->s1, kase->s2, expected, actual, RESET);
 		} else {
-			g_verbose && dprintf(1, "%s %s cmp (%s) (%s): expected: %d, got: %d%s\n", RED, X, kase->s1, kase->s2, actual, expected, RESET);
+			g_verbose && dprintf(1, "%s %s cmp (%s) (%s): expected: %d, got: %d%s\n", RED, X, kase->s1, kase->s2, expected, actual, RESET);
 			success = false;
 		}
 	}
@@ -555,17 +560,18 @@ bool	test_ft_strcpy(void) {
 
 bool	test_ft_strequ(void) {
 	bool success = true;
-	const size_t N_CASES = 8;
+	const size_t N_CASES = 9;
 	struct s_memcmp_case *kase = NULL;
 	int actual = -1, expected = -1;
 	struct s_memcmp_case cases[] = {
-		{"Hello", "Goodbye", 5},
-		{"\200", "\200", 1},
-		{"école 42", "ecole 42", 8},
-		{"", "123", 1},
-		{"42 school", "21 school", 1},
-		{"1234", "1234", 4},
-		{"", "", 1},
+		{"Hello", "Goodbye", 0},
+		{"\200", "\200", 0},
+		{"\200", "\0", 0},
+		{"école 42", "ecole 42", 0},
+		{"", "123", 0},
+		{"42 school", "21 school", 0},
+		{"1234", "1234", 0},
+		{"", "", 0},
 		{"12345", "1234", 0}
 	};
 
@@ -620,6 +626,7 @@ bool	test_ft_strchr(void) {
 int main(int ac, char *av[]) {
 	size_t n_tests = 0;
 	size_t n_success = 0;
+	bool found_arg = false;
 
 	t_test tests[N_FUNCTIONS] = {
 		// I. Required simple
@@ -652,13 +659,22 @@ int main(int ac, char *av[]) {
 	};
 
 	if (ac > 1 && (!strcmp(av[1], "--verbose") || (!strcmp(av[1], "-v")))) g_verbose = true;
+	if (ac > 1 + (int)g_verbose && (!strcmp(av[1+(int)g_verbose], "--help") || (!strcmp(av[1+(int)g_verbose], "-h")))) {
+		printf("Usage: $ ./a.out [-v|--verbose] [function names...]");
+		return (0);
+	}
 	if (ac > 1 + (int)g_verbose) {
-		for (int a = 1; a < ac; a++) {
+		for (int a = 1 + (int)g_verbose; a < ac; a++) {
+			found_arg = false;
 			for (int j = 0; j < N_FUNCTIONS; j++) {
 				if (!strcmp(tests[j].name, av[a])) {
 					n_success += run_test(tests[j]);
 					n_tests++;
+					found_arg = true;
 				}
+			}
+			if (!found_arg) {
+				printf("\n%sarg %s not recognized%s\n", RED, av[a], RESET);
 			}
 		}
 	} else {

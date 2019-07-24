@@ -2,6 +2,7 @@ section .text
 	global _ft_strlen
 
 _ft_strlen:				; size_t ft_strlen(const char *s)
+	enter 0x10, 0
 
 	mov rcx, 0
 	not rcx					; initialize counter to max uint64
@@ -24,6 +25,7 @@ _done:
 	not rcx
 	sub rcx, 1		; invert rcx to get strlen
 	mov rax, rcx
+	leave
 
 _return:
 	ret
