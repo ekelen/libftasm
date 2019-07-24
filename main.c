@@ -625,6 +625,7 @@ bool	test_ft_strchr(void) {
 int main(int ac, char *av[]) {
 	size_t n_tests = 0;
 	size_t n_success = 0;
+	bool found_arg = false;
 
 	t_test tests[N_FUNCTIONS] = {
 		// I. Required simple
@@ -657,13 +658,22 @@ int main(int ac, char *av[]) {
 	};
 
 	if (ac > 1 && (!strcmp(av[1], "--verbose") || (!strcmp(av[1], "-v")))) g_verbose = true;
+	if (ac > 1 && (!strcmp(av[1], "--help") || (!strcmp(av[1], "-h")))) {
+		printf("Usage: $ ./a.out [-v|--verbose] [function names...]");
+		return (0);
+	}
 	if (ac > 1 + (int)g_verbose) {
 		for (int a = 1; a < ac; a++) {
+			found_arg = false;
 			for (int j = 0; j < N_FUNCTIONS; j++) {
 				if (!strcmp(tests[j].name, av[a])) {
 					n_success += run_test(tests[j]);
 					n_tests++;
+					found_arg = true;
 				}
+			}
+			if (!found_arg) {
+				printf("\n%sarg %s not recognized%s\n", RED, av[a], RESET);
 			}
 		}
 	} else {
