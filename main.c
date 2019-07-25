@@ -462,7 +462,7 @@ bool	test_ft_memcmp(void) {
 	int actual, expected;
 	struct s_memcmp_case cases[] = {
 		{"Hello", "Goodbye", 5},
-		{"\200", "\0", 1}, // TODO
+		{"\0", "\200", 1},
 		{"\200", "\200", 1},
 		{"école 42", "ecole 42", 8},
 		{"", "123", 1},
@@ -492,9 +492,9 @@ bool	test_ft_strcmp(void) {
 	struct s_memcmp_case *kase = NULL;
 	int actual = 0, expected = 0;
 	struct s_memcmp_case cases[] = {
+		{"\0", "\200", 0}, // cmp 0, 128
 		{"Hello", "Goodbye", 0},
-		{"\200", "\0", 1}, // TODO
-		{"\200", "\200", 0},
+		{"Goodbye", "Hello", 0},
 		{"école 42", "ecole 42", 0},
 		{"", "123", 0},
 		{"42 school", "21 school", 0},
@@ -659,12 +659,12 @@ int main(int ac, char *av[]) {
 	};
 
 	if (ac > 1 && (!strcmp(av[1], "--verbose") || (!strcmp(av[1], "-v")))) g_verbose = true;
-	if (ac > 1 && (!strcmp(av[1], "--help") || (!strcmp(av[1], "-h")))) {
+	if (ac > 1 + (int)g_verbose && (!strcmp(av[1+(int)g_verbose], "--help") || (!strcmp(av[1+(int)g_verbose], "-h")))) {
 		printf("Usage: $ ./a.out [-v|--verbose] [function names...]");
 		return (0);
 	}
 	if (ac > 1 + (int)g_verbose) {
-		for (int a = 1; a < ac; a++) {
+		for (int a = 1 + (int)g_verbose; a < ac; a++) {
 			found_arg = false;
 			for (int j = 0; j < N_FUNCTIONS; j++) {
 				if (!strcmp(tests[j].name, av[a])) {
