@@ -5,7 +5,6 @@ section .text
 	global _ft_strdup
 
 _ft_strdup:					; char *ft_strdup(const char *s1)
-
 	push rbp
 	mov	rbp, rsp
 
@@ -27,5 +26,5 @@ _ft_strdup:					; char *ft_strdup(const char *s1)
 	call _ft_memcpy
 
 _done:
-	pop	rbp
+	leave
 	ret
