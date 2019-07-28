@@ -4,7 +4,9 @@ section .text
 	global _ft_strcpy
 
 _ft_strcpy:					; char *ft_strcpy(char *dst, const char *src);
-	enter 0x10, 0
+	push rbp
+	mov rbp, rsp
+	sub rsp, 8
 	push rdi					; save dst
 
 	mov rdi, rsi			; prepare ft_strlen args

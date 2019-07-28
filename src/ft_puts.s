@@ -10,7 +10,9 @@ section .text
 
 _ft_puts:						; int ft_puts(const char *s)
 
-	enter 0x10, 0
+	push rbp
+	mov rbp, rsp
+	sub rsp, 8
 
 	cmp rdi, 0				; s is null ptr ?
 	je _no_string

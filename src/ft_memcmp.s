@@ -3,7 +3,9 @@ section .text
 
 _ft_memcmp:					; int memcmp(const void *s1, const void *s2)
 
-	enter 0x10, 0
+	push rbp
+	mov rbp, rsp
+	sub rsp, 8
 
 	cmp rdx, 0				; check n == 0 ?
 	je _done

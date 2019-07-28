@@ -5,7 +5,9 @@ section .text
 	global _ft_strdup
 
 _ft_strdup:					; char *ft_strdup(const char *s1)
-	enter 0x10, 0			
+	push rbp
+	mov rbp, rsp
+	sub rsp, 8			
 
 	push rdi					; save s1
 

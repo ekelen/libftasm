@@ -18,7 +18,9 @@ section .text
 
 _ft_cat:							; void ft_cat(int fd)
 
-	enter 0x10, 0
+	push rbp
+	mov rbp, rsp
+	sub rsp, 8
 
 _read:
 	lea rsi, [rel buf]	; memory addr of buf -> rsi

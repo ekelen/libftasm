@@ -3,7 +3,9 @@ section .text
 
 _ft_memcpy:			; void *ft_memcpy(void *dst, const void *src, size_t n)
 
-	enter 0x10, 0
+	push rbp
+	mov rbp, rsp
+	sub rsp, 8
 
 	push rdi		; save dst
 

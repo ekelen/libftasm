@@ -2,7 +2,9 @@ section .text
 	global _ft_memset
 
 _ft_memset:			; void *ft_memset(void *b, int c, size_t len)
-	enter 0x10, 0
+	push rbp
+	mov rbp, rsp
+	sub rsp, 8
 
 	push rdi		; save b
 	mov rax, rsi	; c to accumulator for string scan

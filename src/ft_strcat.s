@@ -3,7 +3,9 @@ section .text
 
 _ft_strcat:								; char *strcat(char *restrict s1, const char *restrict s2);
 
-	enter 0x10, 0
+	push rbp
+	mov rbp, rsp
+	sub rsp, 8
 
 	mov rcx, 0							; zero out counters
 	mov rdx, 0

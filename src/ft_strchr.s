@@ -3,7 +3,9 @@ section .text
   extern _ft_strlen
 
 _ft_strchr:           		; char *ft_strchr(const char *s, int c)
-	enter 0x10, 0
+	push rbp
+	mov rbp, rsp
+	sub rsp, 8
 	push		rdi       		; save s
 	mov 		al, sil   		; c to rax
 
