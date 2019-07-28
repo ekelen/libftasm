@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekelen <ekelen@student.42.us.org>          +#+  +:+       +#+        */
+/*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/17 23:07:40 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/07/28 12:13:55 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,11 +199,12 @@ bool	test_ft_bzero(void) {
 }
 
 bool	test_ft_puts(void) {
-	const size_t N_CASES = 6;
+	const size_t N_CASES = 7;
 	int actual, expected;
 	bool success = true;
 	const char *cases[] = {
-		NULL, // TODO: Do we care about printing (null)
+		"Hello world",
+		NULL,
 		"\\200",
 		"",
 		"abc",
@@ -215,7 +216,7 @@ bool	test_ft_puts(void) {
 		actual = ft_puts(cases[i]);
 		expected = puts(cases[i]);
 		if (!(actual | expected) || (actual>>31 == expected>>31)) { // same sign or both zero
-			g_verbose && dprintf(1, "%s %s %s\n", GREEN, CHECK, RESET);
+			g_verbose && dprintf(1, "%s %s expected: %d, got: %d%s\n", GREEN, CHECK, expected, actual, RESET);
 		} else {
 			g_verbose && dprintf(1, "%s %s expected: %d, got: %d%s\n", RED, X, expected, actual, RESET);
 			success = false;
@@ -441,9 +442,23 @@ bool	test_ft_cat(void) {
 	if ((fd = open(path, O_RDONLY)) > 0)
 	{
 		ft_cat(fd);
+		dprintf(1, "%s%s%s", GREEN, CHECK, RESET);
 		close(fd);
 	} else {
-		dprintf(2, "%s Error opening file: %s %s", RED, strerror(errno), RESET);
+		dprintf(2, "%s%sError opening file: %s %s", RED, X, strerror(errno), RESET);
+		success = false;
+	}
+
+	const char *badpath = "??";			// an invalid file
+	if ((fd = open(badpath, O_RDONLY)) > 0)
+	{
+		ft_cat(fd);
+		close(fd);
+		dprintf(2, "%s%s%s", RED, X, RESET);
+		success = false;
+	} else {
+		dprintf(2, "%s%sError opening file: %s %s", GREEN, CHECK, strerror(errno), RESET);
+		success = true;
 	}
 	return (success);
 }

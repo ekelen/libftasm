@@ -34,11 +34,11 @@ _read:
 	jc _err				; break if error (if carry flag set)
 
 	cmp rax, EOF
-	je _done				; break if EOF
+	je _done			; break if EOF
 
 _write:
 	mov rdi, STDOUT
-	mov rdx, rax		; num bytes to write (returned from read call)
+	mov rdx, rax		; bytes to write (returned from read call)
 	mov rax, SYSCALL_WRITE
 
 	syscall

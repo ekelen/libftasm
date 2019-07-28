@@ -47,14 +47,12 @@ _put_nl:
 	mov rdi, 1				; how many bytes to write
 	lea rsi, [rel nl]		; newline
 	mov rdx, STDOUT			; which file descriptor
-
 	mov rax, SYSCALL_WRITE
 	syscall
 
-	cmp rax, -1
-	je _done
+	jc _done				; if err
 
-	mov rax, 1				; ok
+	mov rax, 10				; if ok
 	jmp _done
 
 _no_string:
