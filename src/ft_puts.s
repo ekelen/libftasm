@@ -3,6 +3,7 @@
 
 section .data
 	nl: db 0x0a				; \n character
+	null_info: db "(null)", 0x0a, 0
 
 section .text
 	extern _ft_strlen
@@ -14,27 +15,38 @@ _ft_puts:						; int ft_puts(const char *s)
 	mov rbp, rsp
 	sub rsp, 8
 
-	cmp rdi, 0				; s is null ptr ?
-	je _no_string
+	cmp rdi, 0					; s == null pointer?
+	je _put_null
 
 	push rdi					; save s
 
 	call _ft_strlen
 
-	mov rdx, rax			; how many bytes to write
+	mov rdx, rax				; how many bytes to write
 	pop rsi						; addr of s
 	mov rdi, STDOUT
 
 	mov rax, SYSCALL_WRITE
 	syscall
 
-	cmp rax, -1				; check if write error
-	je _done
+	jc _done				; write error
+	jmp _put_nl
 
-put_nl:
+_put_null:
+	xor rdi, rdi
+	mov rdi, STDOUT
+	lea rsi, [rel null_info]
+	mov rdx, 8
+	mov rax, SYSCALL_WRITE
+	syscall
+
+	jmp _no_string
+
+
+_put_nl:
 	mov rdi, 1				; how many bytes to write
-	lea rsi, [rel nl]	; newline
-	mov rdx, 1				; which file descriptor
+	lea rsi, [rel nl]		; newline
+	mov rdx, STDOUT			; which file descriptor
 
 	mov rax, SYSCALL_WRITE
 	syscall
@@ -46,7 +58,7 @@ put_nl:
 	jmp _done
 
 _no_string:
-	mov rax, 0
+	mov rax, 10
 	jmp _done
 
 _done:
