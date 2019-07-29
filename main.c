@@ -312,6 +312,8 @@ bool	_test_ft_strdup(bool success, const char *s1) {
 }
 
 bool	test_ft_strdup(void) {
+
+	// TODO: Segfault on running this test alone, non-verbose, only sometimes
 	bool success = true;
 
 	// basic tests
