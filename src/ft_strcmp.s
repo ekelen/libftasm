@@ -2,6 +2,9 @@ section .text
 	global _ft_strcmp
 
 _ft_strcmp:					; int strcmp(const char *s1, const char *s2)
+	push rbp
+	mov rbp, rsp
+	sub rsp, 8
 
 	mov rcx, 0				; zero out counter
 	mov rax, 0
@@ -30,4 +33,5 @@ _cmp_end:
 	movsx rax, al
 
 _done:
+	leave
 	ret

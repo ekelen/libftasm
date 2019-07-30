@@ -3,6 +3,10 @@ section .text
 
 _ft_memcpy:			; void *ft_memcpy(void *dst, const void *src, size_t n)
 
+	push rbp
+	mov rbp, rsp
+	sub rsp, 8
+
 	push rdi		; save dst
 
 	mov rax, rsi	; src to rax
@@ -20,6 +24,7 @@ _ft_memcpy:			; void *ft_memcpy(void *dst, const void *src, size_t n)
 
 _done:
 	pop rax			; return saved dst
+	leave
 
 _return:
 	ret

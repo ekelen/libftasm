@@ -5,6 +5,7 @@ _ft_bzero:					; void bzero(void *s, size_t n)
 
 	push rbp
 	mov rbp, rsp
+	sub rsp, 8
 
 	mov rcx, 0				; initialize counter to 0
 
@@ -24,6 +25,5 @@ _zero_out_byte:
 	jmp _zero_out_byte
 
 _done:
-	mov rsp, rbp
-	pop rbp
+	leave
 	ret

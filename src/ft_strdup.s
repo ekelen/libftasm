@@ -5,9 +5,10 @@ section .text
 	global _ft_strdup
 
 _ft_strdup:					; char *ft_strdup(const char *s1)
-
 	push rbp
-	mov	rbp, rsp
+	mov rbp, rsp
+
+	sub rsp, 16					; make room for local vars
 
 	push rdi					; save s1
 
@@ -15,17 +16,17 @@ _ft_strdup:					; char *ft_strdup(const char *s1)
 
 	inc rax						; add 1 for \0
 	push rax					; save strlen
-	mov rdi, rax			; prepare to send to malloc
+	mov rdi, rax				; prepare to send to malloc
 
-	call _malloc			; TODO: test malloc fail
+	call _malloc
 
 	; set up vars for call to memcpy
-	mov rdi, rax			; malloc return val -> dst
+	mov rdi, rax				; malloc return val -> dst
 	pop rdx 					; pop saved strlen + 1 -> n
 	pop rsi 					; pop saved s1 -> src
 
 	call _ft_memcpy
 
 _done:
-	pop	rbp
+	leave
 	ret

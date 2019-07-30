@@ -5,6 +5,7 @@ section .text
 _ft_strequ:				; int ft_strequ(char const *s1, char const *s2)
 	push rbp
 	mov rbp, rsp
+	sub rsp, 8
 
 	mov rax, 0
 
@@ -21,5 +22,5 @@ _equal:
 	jmp _return
 
 _return:
-	pop rbp
+	leave
 	ret

@@ -3,6 +3,10 @@ section .text
 
 _ft_strcat:								; char *strcat(char *restrict s1, const char *restrict s2);
 
+	push rbp
+	mov rbp, rsp
+	sub rsp, 8
+
 	mov rcx, 0							; zero out counters
 	mov rdx, 0
 
@@ -26,4 +30,5 @@ _cat:
 _done:
 	mov byte[rdi + rcx], 0	; add \0
 	mov rax, rdi
+	leave
 	ret

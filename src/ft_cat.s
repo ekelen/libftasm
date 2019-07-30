@@ -20,6 +20,7 @@ _ft_cat:							; void ft_cat(int fd)
 
 	push rbp
 	mov rbp, rsp
+	sub rsp, 8
 
 _read:
 	lea rsi, [rel buf]	; memory addr of buf -> rsi
@@ -33,11 +34,11 @@ _read:
 	jc _err				; break if error (if carry flag set)
 
 	cmp rax, EOF
-	je _done				; break if EOF
+	je _done			; break if EOF
 
 _write:
 	mov rdi, STDOUT
-	mov rdx, rax		; num bytes to write (returned from read call)
+	mov rdx, rax		; bytes to write (returned from read call)
 	mov rax, SYSCALL_WRITE
 
 	syscall
@@ -57,7 +58,5 @@ _err:					; set up err msg display
 
 _done:
 	pop rdi				; pop fd a final time
-	mov rsp, rbp
-
-	pop rbp				; epilogue
+	leave
 	ret
