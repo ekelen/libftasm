@@ -6,7 +6,7 @@
 /*   By: ekelen <ekelen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 13:21:01 by ekelen            #+#    #+#             */
-/*   Updated: 2019/07/28 12:13:55 by ekelen           ###   ########.fr       */
+/*   Updated: 2019/08/07 15:42:30 by ekelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,8 +312,6 @@ bool	_test_ft_strdup(bool success, const char *s1) {
 }
 
 bool	test_ft_strdup(void) {
-
-	// TODO: Segfault on running this test alone, non-verbose, only sometimes
 	bool success = true;
 
 	// basic tests

@@ -8,7 +8,7 @@ _ft_strdup:					; char *ft_strdup(const char *s1)
 	push rbp
 	mov rbp, rsp
 
-	sub rsp, 16					; make room for local vars
+	sub rsp, 256				; make room for local vars
 
 	push rdi					; save s1
 
